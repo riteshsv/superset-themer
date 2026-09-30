@@ -1,0 +1,34 @@
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Local test outputs and temporary files
+test-temp-output/
+superset-theme-light.yaml
+superset-theme-dark.yaml
+superset-theme-light.json
+superset-theme-dark.json
+*.log
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Operating System files
+.DS_Store
+Thumbs.db
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# Environment variables (just in case you add an .env file later)
+.env
+.env.local
