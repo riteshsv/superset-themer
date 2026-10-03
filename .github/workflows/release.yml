@@ -11,55 +11,47 @@ on:
 jobs:
   # 1. Continuous Integration Job: Runs tests on every code change
   test:
-    name: Run Unit Tests
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Source Code
-        uses: actions/checkout@v4
+  name: Run Unit Tests
+  runs-on: ubuntu-latest
+  steps:
+    - name: Checkout Source Code
+      uses: actions/checkout@v4
 
-      - name: Setup Node.js Environment
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'npm'
-          registry-url: 'https://registry.npmjs.org'
+    - name: Setup Node.js Environment
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        cache: 'npm'
+        registry-url: 'https://registry.npmjs.org/'  # ← Add trailing slash
 
-      - name: Install Dependencies
-        env:
-          NPM_CONFIG_USERCONFIG: ${{ github.workspace }}/.npmrc
-          NODE_AUTH_TOKEN: ""
-        run: npm ci
+    - name: Install Dependencies
+      run: npm ci
 
-      - name: Run Test Suite
-        run: npm test
+    - name: Run Test Suite
+      run: npm test
 
-  # 2. Continuous Deployment Job: Publishes to npm automatically upon a GitHub Release
-  publish:
-    name: Publish to npm Registry
-    needs: test
-    if: github.event_name == 'release' && github.event.action == 'published'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write # Required if your npm account enforces Provenance/MFA
-    steps:
-      - name: Checkout Source Code
-        uses: actions/checkout@v4
+publish:
+  name: Publish to npm Registry
+  needs: test
+  if: github.event_name == 'release' && github.event.action == 'published'
+  runs-on: ubuntu-latest
+  permissions:
+    contents: read
+    id-token: write
+  steps:
+    - name: Checkout Source Code
+      uses: actions/checkout@v4
 
-      - name: Setup Node.js for Publishing
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          registry-url: 'https://registry.npmjs.org'
+    - name: Setup Node.js for Publishing
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        registry-url: 'https://registry.npmjs.org/'  # ← Add trailing slash
 
-      - name: Install Dependencies
-        env:
-          NPM_CONFIG_USERCONFIG: ${{ github.workspace }}/.npmrc
-          NODE_AUTH_TOKEN: ""
-        run: npm ci
+    - name: Install Dependencies
+      run: npm ci
 
-      - name: Publish Package
-        run: npm publish --access public
-        env:
-          NPM_CONFIG_USERCONFIG: ${{ github.workspace }}/.npmrc
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+    - name: Publish Package
+      run: npm publish --access public
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
