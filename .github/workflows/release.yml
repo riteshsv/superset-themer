@@ -48,6 +48,26 @@ jobs:
           node-version: 20
           registry-url: "https://registry.npmjs.org/" # ← Add trailing slash
 
+      - name: Debug npm configuration
+        run: |
+          echo "=== npm registry ==="
+          npm config get registry
+
+          echo "=== npm config ==="
+          npm config list
+
+          echo "=== project .npmrc ==="
+          cat .npmrc
+
+          echo "=== user config ==="
+          if [ -f "$NPM_CONFIG_USERCONFIG" ]; then
+            cat "$NPM_CONFIG_USERCONFIG"
+          else
+            echo "NPM_CONFIG_USERCONFIG does not exist"
+          fi
+
+          echo "=== yaml lockfile entry ==="
+          grep -A4 -B2 '"node_modules/yaml"' package-lock.json
       - name: Install Dependencies
         run: npm ci
 
