@@ -25,7 +25,10 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install Dependencies
-        run: npm ci --registry=https://registry.npmjs.org
+        env:
+          NPM_CONFIG_USERCONFIG: ${{ github.workspace }}/.npmrc
+          NODE_AUTH_TOKEN: ""
+        run: npm ci
 
       - name: Run Test Suite
         run: npm test
@@ -50,9 +53,13 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install Dependencies
-        run: npm ci --registry=https://registry.npmjs.org
+        env:
+          NPM_CONFIG_USERCONFIG: ${{ github.workspace }}/.npmrc
+          NODE_AUTH_TOKEN: ""
+        run: npm ci
 
       - name: Publish Package
         run: npm publish --access public
         env:
+          NPM_CONFIG_USERCONFIG: ${{ github.workspace }}/.npmrc
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
