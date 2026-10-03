@@ -1,6 +1,6 @@
 {
   "name": "superset-themer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Convert shadcn/ui globals.css themes into Apache Superset dashboard YAML & JSON assets.",
   "main": "./lib/converter.js",
   "type": "module",
